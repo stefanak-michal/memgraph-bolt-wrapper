@@ -2,6 +2,9 @@
 
 This library contains wrapper class to cover basic functionality with [Bolt library](https://github.com/neo4j-php/Bolt).
 
+![DB Tests PHP7](https://github.com/neo4j-php/Bolt/actions/workflows/db-test-php-7.yml/badge.svg?branch=master)
+![DB Tests PHP8](https://github.com/neo4j-php/Bolt/actions/workflows/db-test-php-8.yml/badge.svg?branch=master)
+
 <a href='https://ko-fi.com/Z8Z5ABMLW' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ## Usage
