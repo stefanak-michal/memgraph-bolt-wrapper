@@ -21,8 +21,6 @@ jobs:
         ports:
           - 7687:7687
           - 3000:3000
-        options: >-
-          --health-cmd "wget http://localhost:3000 || exit 1"
 
     steps:
       - name: Checkout
