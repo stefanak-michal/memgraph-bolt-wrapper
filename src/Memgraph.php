@@ -44,10 +44,11 @@ class Memgraph
     {
         if (is_null(self::$protocol)) {
             try {
-                if (strpos(self::$host, '+s://') > 0) {
+                if (self::$host != '127.0.0.1') {
                     $conn = new StreamSocket(self::$host, self::$port, self::$timeout);
                     $conn->setSslContextOptions([
-                        'verify_peer' => true
+                        'peer_name' => 'Memgraph DB',
+                        'allow_self_signed' => true,
                     ]);
                 } else {
                     $conn = new Socket(self::$host, self::$port, self::$timeout);
