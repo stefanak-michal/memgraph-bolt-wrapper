@@ -18,7 +18,7 @@ jobs:
 
     services:
       memgraph:
-        image: memgraph:${{ matrix.memgraph-version }}
+        image: memgraph/memgraph:${{ matrix.memgraph-version }}
         ports:
           - 7687:7687
           - 3000:3000
