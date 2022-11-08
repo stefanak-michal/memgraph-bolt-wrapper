@@ -17,10 +17,9 @@ jobs:
 
     services:
       memgraph:
-        image: memgraph/memgraph-platform:latest
+        image: memgraph/memgraph:latest
         ports:
           - 7687:7687
-          - 3000:3000
 
     steps:
       - name: Checkout
