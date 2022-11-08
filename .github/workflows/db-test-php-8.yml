@@ -9,16 +9,15 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-20.04
-    name: "Running Integration tests for PHP ${{ matrix.php-version }} on Memgraph ${{ matrix.memgraph-version }}"
+    name: "Running Integration tests for PHP ${{ matrix.php-version }} on Memgraph"
     strategy:
       fail-fast: false
       matrix:
-        memgraph-version: ["2.4.2"]
         php-version: ['8.0', '8.1']
 
     services:
       memgraph:
-        image: memgraph/memgraph-platform:${{ matrix.memgraph-version }}
+        image: memgraph/memgraph-platform:latest
         ports:
           - 7687:7687
           - 3000:3000
