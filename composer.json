@@ -1,0 +1,41 @@
+{
+    "name": "stefanak-michal/memgraph-bolt-wrapper",
+    "description": "Adapter to use PHP Bolt library with Memgraph.",
+    "keywords": ["memgraph", "bolt", "socket", "database"],
+    "homepage": "https://github.com/stefanak-michal/memgraph-bolt-wrapper",
+    "type": "library",
+    "readme": "README.md",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.4",
+        "stefanak-michal/bolt": "^5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=9"
+    },
+    "support": {
+        "source": "https://github.com/stefanak-michal/memgraph-bolt-wrapper"
+    },
+    "funding": [
+        {
+            "type": "ko-fi",
+            "url": "https://ko-fi.com/michalstefanak"
+        }
+    ],
+    "authors": [
+        {
+            "name": "Michal Stefanak",
+            "role": "Developer",
+            "homepage": "https://www.linkedin.com/in/michalstefanak/"
+        }
+    ],
+    "autoload": {
+        "files": ["src/Memgraph.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Memgraph\\tests\\": "tests/"
+        }
+    }
+}
