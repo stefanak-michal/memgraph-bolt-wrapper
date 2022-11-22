@@ -1,6 +1,6 @@
 {
     "name": "stefanak-michal/memgraph-bolt-wrapper",
-    "description": "Adapter to use PHP Bolt library with Memgraph.",
+    "description": "Wrapper for Memgraph PHP Bolt library to simplify usage.",
     "keywords": ["memgraph", "bolt", "socket", "database"],
     "homepage": "https://github.com/stefanak-michal/memgraph-bolt-wrapper",
     "type": "library",
