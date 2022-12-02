@@ -8,8 +8,8 @@
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.4",
-        "stefanak-michal/bolt": "^5"
+        "php": "^8",
+        "stefanak-michal/bolt": "^6"
     },
     "require-dev": {
         "phpunit/phpunit": ">=9"
