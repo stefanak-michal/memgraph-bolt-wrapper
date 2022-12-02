@@ -2,7 +2,7 @@
 
 use Bolt\Bolt;
 use Bolt\connection\{Socket, StreamSocket};
-use Bolt\protocol\{AProtocol, Response};
+use Bolt\protocol\{AProtocol, Response, V4_1, V4, V3};
 
 /**
  * Class Memgraph - adapter for Bolt library
@@ -33,14 +33,13 @@ class Memgraph
     public static int $port = 7687;
     public static float $timeout = 15;
 
-    private static ?AProtocol $protocol = null;
+    private static AProtocol|V4_1|V4|V3|null $protocol = null;
     private static array $statistics;
 
     /**
      * Get connection protocol for bolt communication
-     * @return AProtocol
      */
-    protected static function getProtocol(): AProtocol
+    protected static function getProtocol(): AProtocol|V4_1|V4|V3
     {
         if (is_null(self::$protocol)) {
             try {
@@ -98,6 +97,7 @@ class Memgraph
                 $all[] = $response->getContent();
             }
         } catch (Exception $e) {
+            self::getProtocol()->reset();
             self::handleException($e);
             return [];
         }
@@ -129,7 +129,7 @@ class Memgraph
      * @param array $extra
      * @return mixed
      */
-    public static function queryFirstField(string $query, array $params = [], array $extra = [])
+    public static function queryFirstField(string $query, array $params = [], array $extra = []): mixed
     {
         $data = self::query($query, $params, $extra);
         if (empty($data)) {
@@ -175,6 +175,7 @@ class Memgraph
             }
             return true;
         } catch (Exception $e) {
+            self::getProtocol()->reset();
             self::handleException($e);
         }
         return false;
@@ -197,6 +198,7 @@ class Memgraph
             }
             return true;
         } catch (Exception $e) {
+            self::getProtocol()->reset();
             self::handleException($e);
         }
         return false;
@@ -219,6 +221,7 @@ class Memgraph
             }
             return true;
         } catch (Exception $e) {
+            self::getProtocol()->reset();
             self::handleException($e);
         }
         return false;
@@ -253,7 +256,7 @@ class Memgraph
     /**
      * @param Exception $e
      */
-    private static function handleException(Exception $e)
+    private static function handleException(Exception $e): void
     {
         if (is_callable(self::$errorHandler)) {
             call_user_func(self::$errorHandler, $e);

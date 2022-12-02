@@ -100,8 +100,8 @@ class MemgraphTest extends TestCase
     public function structureProvider(): \Generator
     {
         yield 'Duration' => [new Duration(0, 4, 3, 2)];
-        yield 'Date' => [new Date(floor(time() / 86400))];
-        yield 'LocalTime' => [new LocalTime(microtime(true))];
+        yield 'Date' => [new Date(intval(floor(time() / 86400)))];
+        yield 'LocalTime' => [new LocalTime(intval(microtime(true) * 1000))];
         yield 'LocalDateTime' => [new LocalDateTime(time(), 1234)];
     }
 
