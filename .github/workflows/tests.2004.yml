@@ -7,13 +7,13 @@ on:
     branches: [ main ]
 
 jobs:
-  tests:
+  tests-2004:
     runs-on: ubuntu-20.04
     name: "Running Integration tests for PHP ${{ matrix.php-version }} on Memgraph"
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.0', '8.1']
+        php-version: ['8.0']
 
     services:
       memgraph:
