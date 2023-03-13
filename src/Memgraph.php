@@ -2,7 +2,7 @@
 
 use Bolt\Bolt;
 use Bolt\connection\{Socket, StreamSocket};
-use Bolt\protocol\{AProtocol, Response, V4_1, V4, V3};
+use Bolt\protocol\{AProtocol, Response, V4_3, V4_1, V4, V3};
 
 /**
  * Class Memgraph - adapter for Bolt library
@@ -33,13 +33,13 @@ class Memgraph
     public static int $port = 7687;
     public static float $timeout = 15;
 
-    private static AProtocol|V4_1|V4|V3|null $protocol = null;
+    private static AProtocol|V4_3|V4_1|V4|V3|null $protocol = null;
     private static array $statistics;
 
     /**
      * Get connection protocol for bolt communication
      */
-    protected static function getProtocol(): AProtocol|V4_1|V4|V3
+    protected static function getProtocol(): AProtocol|V4_3|V4_1|V4|V3
     {
         if (is_null(self::$protocol)) {
             try {
@@ -54,7 +54,7 @@ class Memgraph
                 }
 
                 $bolt = new Bolt($conn);
-                self::$protocol = $bolt->setProtocolVersions(4.1, 4.0, 3)->build();
+                self::$protocol = $bolt->setProtocolVersions(4.3, 4.1, 4.0, 3)->build();
                 self::$protocol->hello(self::$auth);
 
                 register_shutdown_function(function () {
