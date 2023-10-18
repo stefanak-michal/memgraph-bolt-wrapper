@@ -2,7 +2,6 @@
 
 This library contains wrapper class to cover basic functionality with [Bolt library](https://github.com/neo4j-php/Bolt).
 
-![DB Tests PHP8](https://github.com/stefanak-michal/memgraph-bolt-wrapper/actions/workflows/tests.2004.yml/badge.svg?branch=main)
 ![DB Tests PHP8](https://github.com/stefanak-michal/memgraph-bolt-wrapper/actions/workflows/tests.2204.yml/badge.svg?branch=main)
 
 <a href='https://ko-fi.com/Z8Z5ABMLW' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

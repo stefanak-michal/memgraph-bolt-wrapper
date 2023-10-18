@@ -54,8 +54,14 @@ class Memgraph
                 }
 
                 $bolt = new Bolt($conn);
-                self::$protocol = $bolt->setProtocolVersions(4.3, 4.1, 4.0, 3)->build();
-                self::$protocol->hello(self::$auth);
+                self::$protocol = $bolt->setProtocolVersions(5.2, 4.3, 4.1, 4.0)->build();
+
+                if (version_compare(self::$protocol->getVersion(), '5.2', '>=')) {
+                    self::$protocol->hello();
+                    self::$protocol->logon(self::$auth);
+                } else {
+                    self::$protocol->hello(self::$auth);
+                }
 
                 register_shutdown_function(function () {
                     try {
