@@ -3,7 +3,6 @@
 namespace Memgraph\tests;
 
 use Memgraph;
-use Bolt\helpers\Auth;
 use Bolt\protocol\IStructure;
 use Bolt\protocol\v1\structures\{
     Date,
@@ -23,7 +22,7 @@ class MemgraphTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        Memgraph::$auth = Auth::none();
+        Memgraph::$auth = ['scheme' => 'none'];
     }
 
     /**

@@ -2,7 +2,7 @@
 
 use Bolt\Bolt;
 use Bolt\connection\{Socket, StreamSocket};
-use Bolt\protocol\{AProtocol, Response, V4_3, V4_1, V4, V3};
+use Bolt\protocol\{AProtocol, Response, V5_2, V4_3, V4_1, V4};
 
 /**
  * Class Memgraph - adapter for Bolt library
@@ -25,7 +25,7 @@ class Memgraph
 
     /**
      * Set your authentification
-     * @see \Bolt\helpers\Auth
+     * @link https://github.com/neo4j-php/Bolt?tab=readme-ov-file#authentification
      */
     public static array $auth;
 
@@ -33,13 +33,13 @@ class Memgraph
     public static int $port = 7687;
     public static float $timeout = 15;
 
-    private static AProtocol|V4_3|V4_1|V4|V3|null $protocol = null;
+    private static AProtocol|V5_2|V4_3|V4_1|V4|null $protocol = null;
     private static array $statistics;
 
     /**
      * Get connection protocol for bolt communication
      */
-    protected static function getProtocol(): AProtocol|V4_3|V4_1|V4|V3
+    protected static function getProtocol(): AProtocol|V5_2|V4_3|V4_1|V4
     {
         if (is_null(self::$protocol)) {
             try {
@@ -57,10 +57,10 @@ class Memgraph
                 self::$protocol = $bolt->setProtocolVersions(5.2, 4.3, 4.1, 4.0)->build();
 
                 if (version_compare(self::$protocol->getVersion(), '5.2', '>=')) {
-                    self::$protocol->hello();
-                    self::$protocol->logon(self::$auth);
+                    self::$protocol->hello()->getResponse();
+                    self::$protocol->logon(self::$auth)->getResponse();
                 } else {
-                    self::$protocol->hello(self::$auth);
+                    self::$protocol->hello(self::$auth)->getResponse();
                 }
 
                 register_shutdown_function(function () {
@@ -91,19 +91,19 @@ class Memgraph
         $run = $all = null;
         try {
             $runResponse = self::getProtocol()->run($query, $params, $extra)->getResponse();
-            if ($runResponse->getSignature() != Response::SIGNATURE_SUCCESS) {
-                throw new Exception(implode(' ', $runResponse->getContent()));
+            if ($runResponse->signature != \Bolt\enum\Signature::SUCCESS) {
+                throw new Exception(implode(' ', $runResponse->content));
             }
-            $run = $runResponse->getContent();
+            $run = $runResponse->content;
 
             foreach (self::getProtocol()->pull()->getResponses() as $response) {
-                if ($response->getSignature() == Response::SIGNATURE_IGNORED || $response->getSignature() == Response::SIGNATURE_FAILURE) {
-                    throw new Exception(implode(' ', $runResponse->getContent()));
+                if ($response->signature == \Bolt\enum\Signature::IGNORED || $response->signature == \Bolt\enum\Signature::FAILURE) {
+                    throw new Exception(implode(' ', $runResponse->content));
                 }
-                $all[] = $response->getContent();
+                $all[] = $response->content;
             }
         } catch (Exception $e) {
-            self::getProtocol()->reset();
+            self::getProtocol()->reset()->getResponse();
             self::handleException($e);
             return [];
         }
@@ -116,7 +116,7 @@ class Memgraph
         if (is_callable(self::$logHandler)) {
             $time = 0;
             foreach ($last as $key => $value) {
-                if (substr($key, -5) == '_time') {
+                if (str_ends_with($key, '_time')) {
                     $time += $value;
                 }
             }
@@ -173,15 +173,15 @@ class Memgraph
     {
         try {
             $response = self::getProtocol()->begin($extra)->getResponse();
-            if ($response->getSignature() != Response::SIGNATURE_SUCCESS) {
-                throw new Exception(implode(' ', $response->getContent()));
+            if ($response->signature != \Bolt\enum\Signature::SUCCESS) {
+                throw new Exception(implode(' ', $response->content));
             }
             if (is_callable(self::$logHandler)) {
                 call_user_func(self::$logHandler, 'BEGIN TRANSACTION');
             }
             return true;
         } catch (Exception $e) {
-            self::getProtocol()->reset();
+            self::getProtocol()->reset()->getResponse();
             self::handleException($e);
         }
         return false;
@@ -196,15 +196,15 @@ class Memgraph
     {
         try {
             $response = self::getProtocol()->commit()->getResponse();
-            if ($response->getSignature() != Response::SIGNATURE_SUCCESS) {
-                throw new Exception(implode(' ', $response->getContent()));
+            if ($response->signature != \Bolt\enum\Signature::SUCCESS) {
+                throw new Exception(implode(' ', $response->content));
             }
             if (is_callable(self::$logHandler)) {
                 call_user_func(self::$logHandler, 'COMMIT TRANSACTION');
             }
             return true;
         } catch (Exception $e) {
-            self::getProtocol()->reset();
+            self::getProtocol()->reset()->getResponse();
             self::handleException($e);
         }
         return false;
@@ -219,15 +219,15 @@ class Memgraph
     {
         try {
             $response = self::getProtocol()->rollback()->getResponse();
-            if ($response->getSignature() != Response::SIGNATURE_SUCCESS) {
-                throw new Exception(implode(' ', $response->getContent()));
+            if ($response->signature != \Bolt\enum\Signature::SUCCESS) {
+                throw new Exception(implode(' ', $response->content));
             }
             if (is_callable(self::$logHandler)) {
                 call_user_func(self::$logHandler, 'ROLLBACK TRANSACTION');
             }
             return true;
         } catch (Exception $e) {
-            self::getProtocol()->reset();
+            self::getProtocol()->reset()->getResponse();
             self::handleException($e);
         }
         return false;

@@ -9,7 +9,7 @@ This library contains wrapper class to cover basic functionality with [Bolt libr
 ## Usage
 
 ```php
-Memgraph::$auth = \Bolt\helpers\Auth::none();
+Memgraph::$auth = ['scheme' => 'none'];
 $rows = Memgraph::query('RETURN $n as num', ['n' => 123]);
 ```
 
